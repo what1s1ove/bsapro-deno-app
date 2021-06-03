@@ -1,0 +1,3 @@
+const initApis = () => {};
+
+export { initApis };

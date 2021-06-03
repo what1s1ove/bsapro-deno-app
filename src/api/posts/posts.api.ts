@@ -1,0 +1,3 @@
+const initPosts = () => {};
+
+export { initPosts };
