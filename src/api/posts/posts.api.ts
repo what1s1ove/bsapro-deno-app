@@ -1,5 +1,5 @@
 import { oak } from '../../dependencies.ts';
-import { ApiPath } from '../../common/enums/enums.ts';
+import { ApiPath, HttpCode } from '../../common/enums/enums.ts';
 import { IDataService } from '../../common/interfaces/interfaces.ts';
 import { Post } from '../../common/models/models.ts';
 
@@ -17,7 +17,7 @@ export const initPosts = ({ Router, postsService }: Args): oak.Router => {
     try {
       ctx.response.body = await postsService.findAll();
     } catch (err) {
-      ctx.response.status = 500;
+      ctx.response.status = HttpCode.INTERNAL_SERVER_ERROR;
       ctx.response.body = { msg: err.message };
     }
   });

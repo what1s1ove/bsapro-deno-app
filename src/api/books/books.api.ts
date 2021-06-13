@@ -1,5 +1,5 @@
 import { oak } from '../../dependencies.ts';
-import { ApiPath } from '../../common/enums/enums.ts';
+import { ApiPath, HttpCode } from '../../common/enums/enums.ts';
 import { IDataService } from '../../common/interfaces/interfaces.ts';
 import { Book } from '../../common/models/models.ts';
 interface Args {
@@ -16,7 +16,7 @@ export const initBooks = ({ Router, booksService }: Args): oak.Router => {
     try {
       ctx.response.body = await booksService.findAll();
     } catch (err) {
-      ctx.response.status = 500;
+      ctx.response.status = HttpCode.INTERNAL_SERVER_ERROR;
       ctx.response.body = { msg: err.message };
     }
   });
@@ -26,7 +26,7 @@ export const initBooks = ({ Router, booksService }: Args): oak.Router => {
       const id = ctx.params.id as string;
       ctx.response.body = await booksService.findOne(id);
     } catch (err) {
-      ctx.response.status = 500;
+      ctx.response.status = HttpCode.INTERNAL_SERVER_ERROR;
       ctx.response.body = { msg: err.message };
     }
   });
@@ -35,8 +35,9 @@ export const initBooks = ({ Router, booksService }: Args): oak.Router => {
     try {
       const payload = await ctx.request.body().value;
       ctx.response.body = await booksService.create(payload);
+      ctx.response.status = HttpCode.CREATED;
     } catch (err) {
-      ctx.response.status = 500;
+      ctx.response.status = HttpCode.INTERNAL_SERVER_ERROR;
       ctx.response.body = { msg: err.message };
     }
   });
@@ -47,7 +48,7 @@ export const initBooks = ({ Router, booksService }: Args): oak.Router => {
       const payload = await ctx.request.body().value;
       ctx.response.body = await booksService.update(id, payload);
     } catch (err) {
-      ctx.response.status = 500;
+      ctx.response.status = HttpCode.INTERNAL_SERVER_ERROR;
       ctx.response.body = { msg: err.message };
     }
   });
@@ -57,7 +58,7 @@ export const initBooks = ({ Router, booksService }: Args): oak.Router => {
       const id = ctx.params.id as string;
       ctx.response.body = await booksService.delete(id);
     } catch (err) {
-      ctx.response.status = 500;
+      ctx.response.status = HttpCode.INTERNAL_SERVER_ERROR;
       ctx.response.body = { msg: err.message };
     }
   });

@@ -18,7 +18,7 @@ const config: denon.DenonConfig = {
     },
     test: {
       cmd: 'deno test',
-      allow: [Permission.NET, Permission.ENV, Permission.READ],
+      allow: [Permission.NET, Permission.ENV, Permission.READ, Permission.WRITE],
       env: dotenv.config(),
       unstable: true,
     },

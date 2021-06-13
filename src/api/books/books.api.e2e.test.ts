@@ -1,24 +1,14 @@
 import { ApiPath, HttpCode } from '../../common/enums/enums.ts';
-import { Book } from '../../common/models/models.ts';
-import { IDataService } from '../../common/interfaces/interfaces.ts';
 import { oak, superoak } from '../../dependencies.ts';
 import { initBooks as initBooksApi } from './books.api.ts';
-
-const MOCKED_BOOKS: Book[] = [
-  {
-    id: '1',
-    name: 'DDD'
-  },
-];
+import {
+  books as booksService
+} from '../../services/services.ts';
 
 const setUp = () => {
   const booksApiRouter = initBooksApi({
     Router: oak.Router,
-    booksService: <IDataService<Book>>{
-      findAll() {
-        return Promise.resolve(MOCKED_BOOKS);
-      },
-    },
+    booksService,
   });
 
   return new oak.Application()
@@ -33,9 +23,43 @@ Deno.test({
   async fn() {
     const app = setUp();
     const request = await superoak.superoak(app);
-
     const response = request.get(ApiPath.books);
+    await response.expect(HttpCode.OK);
+  },
+});
 
-    await response.expect(HttpCode.OK).expect(MOCKED_BOOKS);
+Deno.test({
+  name: 'Books api: should get book by id = 1 from /books/:id correctly',
+  sanitizeResources: false,
+  sanitizeOps: false,
+  async fn() {
+    const app = setUp();
+    const request = await superoak.superoak(app);
+    const response = request.get(`${ApiPath.books}/1`);
+    await response.expect(HttpCode.OK);
+  },
+});
+
+Deno.test({
+  name: 'Books api: should get book by id = 5 from /books/:id correctly(failed)',
+  sanitizeResources: false,
+  sanitizeOps: false,
+  async fn() {
+    const app = setUp();
+    const request = await superoak.superoak(app);
+    const response = request.get(`${ApiPath.books}/5`);
+    await response.expect(HttpCode.OK);
+  },
+});
+
+Deno.test({
+  name: 'Books api: should create new book from /books correctly',
+  sanitizeResources: false,
+  sanitizeOps: false,
+  async fn() {
+    const app = setUp();
+    const request = await superoak.superoak(app);
+    const response = request.post(ApiPath.books).send({ name: "Typescript" });
+    await response.expect(HttpCode.CREATED);
   },
 });
