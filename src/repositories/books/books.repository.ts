@@ -1,18 +1,52 @@
-import { readFile } from '../../helpers/helpers.ts';
-import { Book } from '../../common/types/types.ts';
+import { v4 } from 'https://deno.land/std@0.98.0/uuid/mod.ts';
+import { readFile, writeFile } from '../../helpers/helpers.ts';
+import { Book } from '../../common/models/models.ts';
 import { IRepository } from '../../common/interfaces/interfaces.ts';
 
-const booksDataPath = new URL('./books.json', import.meta.url).pathname;
-
-export class Books implements Partial<IRepository<Book>> {
+const booksDataPath = new URL('./books.json', import.meta.url);
+export class Books implements IRepository<Book> {
   public findAll(): Promise<Book[]> {
     return this._getBooks();
   }
 
   private async _getBooks(): Promise<Book[]> {
     const books = await readFile(booksDataPath);
-
     return JSON.parse(books);
+  }
+
+  public async findOne(id: string): Promise<Book | null> {
+    const books = await this._getBooks();
+    return books.find(book => book.id === id) || null;
+  }
+
+  public async create(payload: Omit<Book, 'id'>): Promise<Book> {
+    const bookExists = await this._isExists(payload.name);
+    if (!bookExists) {
+      const prevBooks = await this._getBooks();
+      const newBook = { id: v4.generate(), ...payload };
+      await writeFile(booksDataPath, JSON.stringify([...prevBooks, newBook], null, '\t'));
+      return newBook;
+    }
+    return bookExists;
+  }
+
+  public async update(id: string, payload: Book): Promise<Book> {
+    const books = await this._getBooks();
+    const updatedBooks = books.map(book => book.id === id ? payload : book);
+    await writeFile(booksDataPath, JSON.stringify(updatedBooks, null, '\t'));
+    return payload;
+  }
+
+  public async delete(id: string): Promise<boolean> {
+    const books = await this._getBooks();
+    const newBooks = books.filter(book => book.id !== id);
+    await writeFile(booksDataPath, JSON.stringify(newBooks, null, '\t'));
+    return books.length === newBooks.length;
+  }
+
+  public async _isExists(name: string): Promise<Book | null> {
+    const books = await this._getBooks();
+    return books.find(book => book.name === name) || null;
   }
 }
 

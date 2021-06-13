@@ -1,5 +1,5 @@
 import { ApiPath, HttpCode } from '../../common/enums/enums.ts';
-import { Book } from '../../common/types/types.ts';
+import { Book } from '../../common/models/models.ts';
 import { IDataService } from '../../common/interfaces/interfaces.ts';
 import { oak, superoak } from '../../dependencies.ts';
 import { initBooks as initBooksApi } from './books.api.ts';
@@ -7,7 +7,7 @@ import { initBooks as initBooksApi } from './books.api.ts';
 const MOCKED_BOOKS: Book[] = [
   {
     id: '1',
-    name: 'DDD',
+    name: 'DDD'
   },
 ];
 
@@ -34,7 +34,7 @@ Deno.test({
     const app = setUp();
     const request = await superoak.superoak(app);
 
-    const response = request.get(ApiPath.BOOKS);
+    const response = request.get(ApiPath.books);
 
     await response.expect(HttpCode.OK).expect(MOCKED_BOOKS);
   },

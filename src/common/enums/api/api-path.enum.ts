@@ -1,5 +1,7 @@
 export const ApiPath = {
-  BOOKS: '/books',
-  POSTS: '/posts',
+  books: '/books',
+  posts: '/posts',
+  root: '/',
+  rootById: '/:id',
 } as const;
 

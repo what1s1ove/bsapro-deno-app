@@ -1,4 +1,18 @@
 [
-  { "id": "1", "name": "DDD" },
-  { "id": "2", "name": "Clean Architecture" }
+	{
+		"id": "1",
+		"name": "DDD"
+	},
+	{
+		"id": "2",
+		"name": "Clean Architecture"
+	},
+	{
+		"id": "ada644db-22c4-4b08-97a3-22d304fb975c",
+		"name": "TypeScript"
+	},
+	{
+		"id": "9253170b-33c5-42de-9355-81b685886193",
+		"name": "JavaScript"
+	}
 ]

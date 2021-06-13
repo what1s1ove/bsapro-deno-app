@@ -3,7 +3,7 @@ import {
   ExceptionName,
   ExceptionDefaultMessage,
 } from '../../common/enums/enums.ts';
-import { EnumValue } from '../../common/types/types.ts';
+import { EnumValue } from '../../common/enums/enums.ts';
 import { ApplicationError } from '../application-error/application-error.exception.ts';
 
 interface Constructor {
