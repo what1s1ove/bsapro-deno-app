@@ -1,4 +1,4 @@
-import { ApiPath, HttpMethod, BooksApiPath } from '../../common/enums/enums.ts';
+import { ApiPath, HttpMethod, PostApiPath } from '../../common/enums/enums.ts';
 import { IRepository } from '../../common/interfaces/interfaces.ts';
 import { Post } from '../../common/types/types.ts';
 import { Http } from '../http/http.service.ts';
@@ -8,7 +8,7 @@ type Constructor = {
   http: Http;
 };
 
-class Posts implements Partial<IRepository<Post>> {
+class Posts implements IRepository<Post> {
   #baseUrl: string;
 
   #http: Http;
@@ -20,12 +20,42 @@ class Posts implements Partial<IRepository<Post>> {
 
   public findAll(): Promise<Post[]> {
     return this.#http.load<Post[]>(this._getUrl(), {
-      method: HttpMethod.GET,
+      method: HttpMethod.GET
     });
   }
 
-  private _getUrl(path: string = BooksApiPath.ROOT) {
+  public findOne(id: string): Promise<Post> {
+    return this.#http.load<Post>(this._getUrl(this._attachIdToRootPath(id)), {
+      method: HttpMethod.GET
+    });
+  }
+
+  public create(post: Post): Promise<Post> {
+    return this.#http.load<Post>(this._getUrl(), {
+      method: HttpMethod.POST,
+      body: JSON.stringify(post)
+    });
+  }
+
+  public update(post: Post): Promise<Post> {
+    return this.#http.load<Post>(this._getUrl(this._attachIdToRootPath(post.id)), {
+      method: HttpMethod.PUT,
+      body: JSON.stringify(post)
+    });
+  }
+
+  public delete(id: string): Promise<boolean> {
+    return this.#http.load<boolean>(this._getUrl(this._attachIdToRootPath(id)), {
+      method: HttpMethod.DELETE
+    });
+  }
+
+  private _getUrl(path: string = PostApiPath.ROOT) {
     return this.#baseUrl + ApiPath.POSTS + path;
+  }
+
+  private _attachIdToRootPath(id: string): string {
+    return `${PostApiPath.ROOT}${id}`;
   }
 }
 
