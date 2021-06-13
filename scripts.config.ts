@@ -1,4 +1,4 @@
-import * as dotenv from 'https://deno.land/x/dotenv/mod.ts';
+import * as dotenv from 'https://deno.land/x/dotenv@v2.0.0/mod.ts';
 import { denon } from './src/dependencies.ts';
 
 const Permission = {

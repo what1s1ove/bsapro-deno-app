@@ -4,7 +4,7 @@ import { IRepository } from '../../common/interfaces/interfaces.ts';
 
 const booksDataPath = new URL('./books.json', import.meta.url).pathname;
 
-class Books implements Partial<IRepository<Book>> {
+export class Books implements Partial<IRepository<Book>> {
   public findAll(): Promise<Book[]> {
     return this._getBooks();
   }
@@ -16,4 +16,3 @@ class Books implements Partial<IRepository<Book>> {
   }
 }
 
-export { Books };

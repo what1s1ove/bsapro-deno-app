@@ -3,12 +3,12 @@ import { ApiPath, BooksApiPath } from '../../common/enums/enums.ts';
 import { IDataService } from '../../common/interfaces/interfaces.ts';
 import { Book } from '../../common/types/types.ts';
 
-type Args = {
+interface Args {
   Router: typeof oak.Router;
   booksService: Partial<IDataService<Book>>;
-};
+}
 
-const initBooks = ({ Router, booksService }: Args): oak.Router => {
+export const initBooks = ({ Router, booksService }: Args): oak.Router => {
   const router = new Router({
     prefix: ApiPath.BOOKS,
   });
@@ -20,4 +20,3 @@ const initBooks = ({ Router, booksService }: Args): oak.Router => {
   return router;
 };
 
-export { initBooks };

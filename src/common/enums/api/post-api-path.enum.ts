@@ -1,5 +1,4 @@
-const PostApiPath = {
+export const PostApiPath = {
   ROOT: '/',
 } as const;
 
-export { PostApiPath };

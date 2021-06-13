@@ -4,11 +4,10 @@ import {
 } from '../../common/interfaces/interfaces.ts';
 import { Book } from '../../common/types/types.ts';
 
-type Constructor = {
+interface Constructor {
   booksRepository: Partial<IRepository<Book>>;
-};
-
-class Books implements Partial<IDataService<Book>> {
+}
+export class Books implements Partial<IDataService<Book>> {
   #booksRepository: IRepository<Book>;
 
   constructor({ booksRepository }: Constructor) {
@@ -19,5 +18,3 @@ class Books implements Partial<IDataService<Book>> {
     return this.#booksRepository.findAll();
   }
 }
-
-export { Books };

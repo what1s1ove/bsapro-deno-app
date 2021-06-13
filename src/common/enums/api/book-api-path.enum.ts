@@ -1,5 +1,3 @@
-const BooksApiPath = {
+export const BooksApiPath = {
   ROOT: '/',
 } as const;
-
-export { BooksApiPath };

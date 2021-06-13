@@ -3,12 +3,11 @@ import { IRepository } from '../../common/interfaces/interfaces.ts';
 import { Post } from '../../common/types/types.ts';
 import { Http } from '../http/http.service.ts';
 
-type Constructor = {
+interface Constructor {
   baseUrl: string;
   http: Http;
-};
-
-class Posts implements Partial<IRepository<Post>> {
+}
+export class Posts implements Partial<IRepository<Post>> {
   #baseUrl: string;
 
   #http: Http;
@@ -28,5 +27,3 @@ class Posts implements Partial<IRepository<Post>> {
     return this.#baseUrl + ApiPath.POSTS + path;
   }
 }
-
-export { Posts };

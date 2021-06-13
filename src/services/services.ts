@@ -4,15 +4,13 @@ import { Books } from './books/books.service.ts';
 import { Http } from './http/http.service.ts';
 import { Posts } from './posts/posts.service.ts';
 
-const http = new Http();
+export const http = new Http();
 
-const books = new Books({
+export const books = new Books({
   booksRepository,
 });
 
-const posts = new Posts({
+export const posts = new Posts({
   baseUrl: ENV.API_URL.PLACEHOLDER_API,
   http,
 });
-
-export { http, books, posts };

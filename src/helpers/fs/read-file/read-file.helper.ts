@@ -1,5 +1,2 @@
-const readFile = (path: string): Promise<string> => {
-  return Deno.readTextFile(path);
-};
+export const readFile = (path: string): Promise<string> => Deno.readTextFile(path);
 
-export { readFile };

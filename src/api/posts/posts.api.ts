@@ -3,12 +3,12 @@ import { ApiPath, PostApiPath } from '../../common/enums/enums.ts';
 import { IDataService } from '../../common/interfaces/interfaces.ts';
 import { Post } from '../../common/types/types.ts';
 
-type Args = {
+interface Args {
   Router: typeof oak.Router;
   postsService: Partial<IDataService<Post>>;
-};
+}
 
-const initPosts = ({ Router, postsService }: Args): oak.Router => {
+export const initPosts = ({ Router, postsService }: Args): oak.Router => {
   const router = new Router({
     prefix: ApiPath.POSTS,
   });
@@ -20,4 +20,3 @@ const initPosts = ({ Router, postsService }: Args): oak.Router => {
   return router;
 };
 
-export { initPosts };
