@@ -23,7 +23,7 @@ Deno.test({
   async fn() {
     const app = setUp();
     const request = await superoak.superoak(app);
-    const response = request.get(ApiPath.posts);
+    const response = request.get(ApiPath.POSTS);
     await response.expect(HttpCode.OK);
   },
 });
@@ -35,7 +35,7 @@ Deno.test({
   async fn() {
     const app = setUp();
     const request = await superoak.superoak(app);
-    const response = request.get(`${ApiPath.posts}/1`);
+    const response = request.get(`${ApiPath.POSTS}/1`);
     await response.expect(HttpCode.OK);
   },
 });

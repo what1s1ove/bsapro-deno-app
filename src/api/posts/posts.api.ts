@@ -10,10 +10,10 @@ interface Args {
 
 export const initPosts = ({ Router, postsService }: Args): oak.Router => {
   const router = new Router({
-    prefix: ApiPath.posts,
+    prefix: ApiPath.POSTS,
   });
 
-  router.get(ApiPath.root, async (ctx: oak.RouterContext) => {
+  router.get(ApiPath.ROOT, async (ctx: oak.RouterContext) => {
     try {
       ctx.response.body = await postsService.findAll();
     } catch (err) {
@@ -22,23 +22,23 @@ export const initPosts = ({ Router, postsService }: Args): oak.Router => {
     }
   });
 
-  router.get(ApiPath.rootById, async (ctx: oak.RouterContext) => {
+  router.get(ApiPath.$ID, async (ctx: oak.RouterContext) => {
     const id = ctx.params.id as string;
     ctx.response.body = await postsService.findOne(id);
   });
 
-  router.post(ApiPath.root, async (ctx: oak.RouterContext) => {
+  router.post(ApiPath.ROOT, async (ctx: oak.RouterContext) => {
     const payload = await ctx.request.body().value;
     ctx.response.body = await postsService.create(payload);
   });
 
-  router.put(ApiPath.root, async (ctx: oak.RouterContext) => {
+  router.put(ApiPath.ROOT, async (ctx: oak.RouterContext) => {
     const id = ctx.params.id as string;
     const payload = await ctx.request.body().value;
     ctx.response.body = await postsService.update(id, payload);
   });
 
-  router.delete(ApiPath.root, async (ctx: oak.RouterContext) => {
+  router.delete(ApiPath.ROOT, async (ctx: oak.RouterContext) => {
     const id = ctx.params.id as string;
     ctx.response.body = await postsService.delete(id);
   });

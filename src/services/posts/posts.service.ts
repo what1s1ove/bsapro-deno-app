@@ -42,6 +42,6 @@ export class Posts implements IRepository<Post> {
   }
 
   private _getUrl(path = '') {
-    return this.#baseUrl + ApiPath.posts + ApiPath.root + path;
+    return this.#baseUrl + ApiPath.POSTS + ApiPath.ROOT + path;
   }
 }

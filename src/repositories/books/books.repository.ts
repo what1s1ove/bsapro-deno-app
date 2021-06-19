@@ -1,52 +1,31 @@
-import { v4 } from 'https://deno.land/std@0.98.0/uuid/mod.ts';
-import { readFile, writeFile } from '../../helpers/helpers.ts';
+import * as booksHelper from './helpers/books.helper.ts';
 import { Book } from '../../common/models/models.ts';
 import { IRepository } from '../../common/interfaces/interfaces.ts';
-
-const booksDataPath = new URL('./books.json', import.meta.url);
 export class Books implements IRepository<Book> {
+  private booksDataPath = new URL('./books.json', import.meta.url);
+
   public findAll(): Promise<Book[]> {
     return this._getBooks();
   }
 
-  private async _getBooks(): Promise<Book[]> {
-    const books = await readFile(booksDataPath);
-    return JSON.parse(books);
+  private _getBooks(): Promise<Book[]> {
+    return booksHelper.getAllBooks(this.booksDataPath);
   }
 
-  public async findOne(id: string): Promise<Book | null> {
-    const books = await this._getBooks();
-    return books.find(book => book.id === id) || null;
+  public findOne(id: string): Promise<Book | null> {
+    return booksHelper.getBookById(this.booksDataPath, id);
   }
 
-  public async create(payload: Omit<Book, 'id'>): Promise<Book> {
-    const bookExists = await this._isExists(payload.name);
-    if (!bookExists) {
-      const prevBooks = await this._getBooks();
-      const newBook = { id: v4.generate(), ...payload };
-      await writeFile(booksDataPath, JSON.stringify([...prevBooks, newBook], null, '\t'));
-      return newBook;
-    }
-    return bookExists;
+  public create(payload: Omit<Book, 'id'>): Promise<Book> {
+    return booksHelper.createBook(this.booksDataPath, payload);
   }
 
-  public async update(id: string, payload: Book): Promise<Book> {
-    const books = await this._getBooks();
-    const updatedBooks = books.map(book => book.id === id ? payload : book);
-    await writeFile(booksDataPath, JSON.stringify(updatedBooks, null, '\t'));
-    return payload;
+  public update(id: string, payload: Book): Promise<Book> {
+    return booksHelper.updateBook(this.booksDataPath, id, payload);
   }
 
-  public async delete(id: string): Promise<boolean> {
-    const books = await this._getBooks();
-    const newBooks = books.filter(book => book.id !== id);
-    await writeFile(booksDataPath, JSON.stringify(newBooks, null, '\t'));
-    return books.length === newBooks.length;
-  }
-
-  public async _isExists(name: string): Promise<Book | null> {
-    const books = await this._getBooks();
-    return books.find(book => book.name === name) || null;
+  public delete(id: string): Promise<boolean> {
+    return booksHelper.deleteBook(this.booksDataPath, id);
   }
 }
 

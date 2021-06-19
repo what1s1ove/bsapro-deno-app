@@ -9,10 +9,10 @@ interface Args {
 
 export const initBooks = ({ Router, booksService }: Args): oak.Router => {
   const router = new Router({
-    prefix: ApiPath.books,
+    prefix: ApiPath.BOOKS,
   });
 
-  router.get(ApiPath.root, async (ctx: oak.RouterContext) => {
+  router.get(ApiPath.ROOT, async (ctx: oak.RouterContext) => {
     try {
       ctx.response.body = await booksService.findAll();
     } catch (err) {
@@ -21,7 +21,7 @@ export const initBooks = ({ Router, booksService }: Args): oak.Router => {
     }
   });
 
-  router.get(ApiPath.rootById, async (ctx: oak.RouterContext) => {
+  router.get(ApiPath.$ID, async (ctx: oak.RouterContext) => {
     try {
       const id = ctx.params.id as string;
       ctx.response.body = await booksService.findOne(id);
@@ -31,7 +31,7 @@ export const initBooks = ({ Router, booksService }: Args): oak.Router => {
     }
   });
 
-  router.post(ApiPath.root, async (ctx: oak.RouterContext) => {
+  router.post(ApiPath.ROOT, async (ctx: oak.RouterContext) => {
     try {
       const payload = await ctx.request.body().value;
       ctx.response.body = await booksService.create(payload);
@@ -42,7 +42,7 @@ export const initBooks = ({ Router, booksService }: Args): oak.Router => {
     }
   });
 
-  router.put(ApiPath.root, async (ctx: oak.RouterContext) => {
+  router.put(ApiPath.ROOT, async (ctx: oak.RouterContext) => {
     try {
       const id = ctx.params.id as string;
       const payload = await ctx.request.body().value;
@@ -53,7 +53,7 @@ export const initBooks = ({ Router, booksService }: Args): oak.Router => {
     }
   });
 
-  router.delete(ApiPath.root, async (ctx: oak.RouterContext) => {
+  router.delete(ApiPath.ROOT, async (ctx: oak.RouterContext) => {
     try {
       const id = ctx.params.id as string;
       ctx.response.body = await booksService.delete(id);
