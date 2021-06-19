@@ -1,16 +1,15 @@
-import { ApiPath, HttpMethod, BooksApiPath } from '../../common/enums/enums.ts';
-import { IRepository } from '../../common/interfaces/interfaces.ts';
-import { Post } from '../../common/types/types.ts';
+import { v4 } from 'https://deno.land/std@0.98.0/uuid/mod.ts';
 import { Http } from '../http/http.service.ts';
+import { ApiPath, HttpMethod } from '../../common/enums/enums.ts';
+import { IRepository } from '../../common/interfaces/interfaces.ts';
+import { Post } from '../../common/models/models.ts';
 
-type Constructor = {
+interface Constructor {
   baseUrl: string;
   http: Http;
-};
-
-class Posts implements Partial<IRepository<Post>> {
+}
+export class Posts implements IRepository<Post> {
   #baseUrl: string;
-
   #http: Http;
 
   constructor({ baseUrl, http }: Constructor) {
@@ -24,9 +23,25 @@ class Posts implements Partial<IRepository<Post>> {
     });
   }
 
-  private _getUrl(path: string = BooksApiPath.ROOT) {
-    return this.#baseUrl + ApiPath.POSTS + path;
+  public findOne(id: string): Promise<Post> {
+    return this.#http.load<Post>(this._getUrl(id), {
+      method: HttpMethod.GET,
+    });
+  }
+
+  public create(payload: Omit<Post, 'id'>): Promise<Post> {
+    return Promise.resolve({ id: v4.generate(), ...payload }) as Promise<Post>;
+  }
+
+  public update(id: string, payload: Post): Promise<Post> {
+    return Promise.resolve({ ...payload }) as Promise<Post>;
+  }
+
+  public delete(id: string): Promise<boolean> {
+    return Promise.resolve(true) as Promise<boolean>;
+  }
+
+  private _getUrl(path = '') {
+    return this.#baseUrl + ApiPath.POSTS + ApiPath.ROOT + path;
   }
 }
-
-export { Posts };

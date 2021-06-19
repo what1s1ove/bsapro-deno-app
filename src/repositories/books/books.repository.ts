@@ -1,19 +1,31 @@
-import { readFile } from '../../helpers/helpers.ts';
-import { Book } from '../../common/types/types.ts';
+import * as booksHelper from './helpers/books.helper.ts';
+import { Book } from '../../common/models/models.ts';
 import { IRepository } from '../../common/interfaces/interfaces.ts';
+export class Books implements IRepository<Book> {
+  private booksDataPath = new URL('./books.json', import.meta.url);
 
-const booksDataPath = new URL('./books.json', import.meta.url).pathname;
-
-class Books implements Partial<IRepository<Book>> {
   public findAll(): Promise<Book[]> {
     return this._getBooks();
   }
 
-  private async _getBooks(): Promise<Book[]> {
-    const books = await readFile(booksDataPath);
+  private _getBooks(): Promise<Book[]> {
+    return booksHelper.getAllBooks(this.booksDataPath);
+  }
 
-    return JSON.parse(books);
+  public findOne(id: string): Promise<Book | null> {
+    return booksHelper.getBookById(this.booksDataPath, id);
+  }
+
+  public create(payload: Omit<Book, 'id'>): Promise<Book> {
+    return booksHelper.createBook(this.booksDataPath, payload);
+  }
+
+  public update(id: string, payload: Book): Promise<Book> {
+    return booksHelper.updateBook(this.booksDataPath, id, payload);
+  }
+
+  public delete(id: string): Promise<boolean> {
+    return booksHelper.deleteBook(this.booksDataPath, id);
   }
 }
 
-export { Books };

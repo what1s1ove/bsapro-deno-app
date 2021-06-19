@@ -7,7 +7,7 @@ import { ENV } from '../common/enums/enums.ts';
 import { initBooks as initBooksApi } from './books/books.api.ts';
 import { initPosts as initPostsApi } from './posts/posts.api.ts';
 
-const initApis = (Router: typeof oak.Router): oak.Router => {
+export const initApis = (Router: typeof oak.Router): oak.Router => {
   const apiRouter = new Router({
     prefix: ENV.API.V1_PATH,
   });
@@ -30,5 +30,3 @@ const initApis = (Router: typeof oak.Router): oak.Router => {
 
   return apiRouter;
 };
-
-export { initApis };

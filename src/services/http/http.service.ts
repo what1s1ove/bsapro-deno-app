@@ -1,11 +1,10 @@
 import { HttpError } from '../../exceptions/exceptions.ts';
 import { HttpMethod, HttpCode } from '../../common/enums/enums.ts';
-import { EnumValue } from '../../common/types/types.ts';
+import { EnumValue } from '../../common/enums/enums.ts';
 
-class Http {
+export class Http {
   public load<T = unknown>(url: string, options: RequestInit): Promise<T> {
     const { method = HttpMethod.GET } = options;
-
     return fetch(url, {
       method,
     })
@@ -21,7 +20,6 @@ class Http {
         message: response.statusText,
       });
     }
-
     return response;
   }
 
@@ -33,5 +31,3 @@ class Http {
     throw err;
   }
 }
-
-export { Http };

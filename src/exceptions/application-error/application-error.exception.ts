@@ -3,11 +3,10 @@ import {
   ExceptionDefaultMessage,
 } from '../../common/enums/enums.ts';
 
-type Constructor = {
+interface Constructor {
   message: string;
-};
-
-class ApplicationError extends Error {
+}
+export class ApplicationError extends Error {
   constructor({
     message = ExceptionDefaultMessage.APPLICATION_ERROR,
   }: Constructor) {
@@ -15,5 +14,3 @@ class ApplicationError extends Error {
     this.name = ExceptionName.APPLICATION_ERROR;
   }
 }
-
-export { ApplicationError };

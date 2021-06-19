@@ -1,9 +1,8 @@
-interface IRepository<T> {
+export interface IRepository<T> {
   findAll(): Promise<T[]>;
   findOne(id: string): Promise<T | null>;
-  create(payload: Partial<T>): Promise<T>;
-  update(payload: T): Promise<T>;
+  create(payload: Omit<T, 'id'>): Promise<T>;
+  update(id: string, payload: T): Promise<T>;
   delete(id: string): Promise<boolean>;
 }
 
-export type { IRepository };

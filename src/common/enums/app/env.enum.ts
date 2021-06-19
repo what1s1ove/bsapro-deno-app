@@ -1,4 +1,4 @@
-const ENV = {
+export const ENV = {
   APP: {
     SERVER_PORT: Number(Deno.env.get('PORT')),
   },
@@ -9,5 +9,3 @@ const ENV = {
     PLACEHOLDER_API: <string>Deno.env.get('PLACEHOLDER_API_URL'),
   },
 } as const;
-
-export { ENV };

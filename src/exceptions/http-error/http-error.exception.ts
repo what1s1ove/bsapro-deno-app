@@ -3,15 +3,14 @@ import {
   ExceptionName,
   ExceptionDefaultMessage,
 } from '../../common/enums/enums.ts';
-import { EnumValue } from '../../common/types/types.ts';
+import { EnumValue } from '../../common/enums/enums.ts';
 import { ApplicationError } from '../application-error/application-error.exception.ts';
 
-type Constructor = {
+interface Constructor {
   status: EnumValue<typeof HttpCode>;
   message: string;
-};
-
-class HttpError extends ApplicationError {
+}
+export class HttpError extends ApplicationError {
   status: EnumValue<typeof HttpCode>;
 
   constructor({
@@ -25,5 +24,3 @@ class HttpError extends ApplicationError {
     this.name = ExceptionName.HTTP_ERROR;
   }
 }
-
-export { HttpError };
